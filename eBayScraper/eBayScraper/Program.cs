@@ -29,18 +29,19 @@ namespace eBayScraper
             {
                 // Create the connectionString
                 // Trusted_Connection is used to denote the connection uses Windows Authentication
-                conn.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\MyDox\C_sharp_projects\csharp-intermediate\WebScraperProjects\eBayScraper\eBayScraper\eBayDatabase1.mdf;Integrated Security=True;Connect Timeout = 30";
+                conn.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\MyDox\C_sharp_projects\WebScraperProjects\eBayScraper\eBayScraper\eBayDatabase1.mdf;Integrated Security=True;Connect Timeout = 30";
 
                 try
                 {
                     conn.Open();
+                    Console.WriteLine("connection opened!");
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine("My Bad: " + e);
                 }
 
-                var url = "https://www.ebay.com/sch/i.html?_from=R40&_nkw=xbox+one&_in_kw=1&_ex_kw=&_sacat=0&LH_Complete=1&_udlo=&_udhi=&_samilow=&_samihi=&_sadis=15&_stpos=02886&_sargn=-1%26saslc%3D1&_salic=1&_sop=12&_dmd=1&_ipg=10";
+                var url = "https://www.ebay.com/sch/i.html?_from=R40&_nkw=xbox+one&_in_kw=1&_ex_kw=&_sacat=0&LH_Complete=1&_udlo=&_udhi=&_samilow=&_samihi=&_sadis=15&_stpos=02886&_sargn=-1%26saslc%3D1&_salic=1&_sop=12&_dmd=1&_ipg=200";
 
                 // This method call using System.Net.Http;
                 // Requires method to be async
@@ -79,38 +80,48 @@ namespace eBayScraper
                     Console.WriteLine(ProductName);
                 
                     // Price
-                    var Price = (
+                    var xPrice = (
                         Regex.Match(
                         ProductListItem.Descendants("li")
                         .Where(node => node.GetAttributeValue("class", "")
                         .Equals("lvprice prc")).FirstOrDefault().InnerText.Trim('\r', '\n', '\t')
                         , @"\d+.\d+")
                         );
-                    //Console.WriteLine(Price);
+                    var Price = xPrice.ToString();
+                    Console.WriteLine(Price);
                     
                     // ListingType
                     var ListingType = (ProductListItem.Descendants("li")
                         .Where(node => node.GetAttributeValue("class", "")
                             .Equals("lvformat")).FirstOrDefault().InnerText.Trim('\r', '\n', '\t')
                             );
-                    //Console.WriteLine(ListingType);
+                    Console.WriteLine(ListingType);
                     
 
                     // Url
                     var Url = (ProductListItem.Descendants("a").FirstOrDefault().GetAttributeValue("href", "").Trim('\r', '\n', '\t')
                         );
-                    // Console.WriteLine(Url);
+                    Console.WriteLine(Url);
 
                     Console.WriteLine();
 
                     // Add data to database
-                    SqlCommand insertCommand = new SqlCommand("INSERT INTO eBayData1 (ListingId, ProductName, Price, ListingType, Url) VALUES (@0, @1, @2, @3, @4)", conn);
+                    SqlCommand insertCommand = new SqlCommand("INSERT INTO dbo.eBayData1 (ListingId, ProductName, Price, ListingType, Url) VALUES (@0, @1, @2, @3, @4)", conn);
 
                     insertCommand.Parameters.Add(new SqlParameter("0", Id));
                     insertCommand.Parameters.Add(new SqlParameter("1", ProductName));
                     insertCommand.Parameters.Add(new SqlParameter("2", Price));
                     insertCommand.Parameters.Add(new SqlParameter("3", ListingType));
                     insertCommand.Parameters.Add(new SqlParameter("4", Url));
+
+                    try
+                    {
+                        Console.WriteLine("Commands executed! Total rows affected are " + insertCommand.ExecuteNonQuery());
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("OOPs " + e);
+                    }
 
                     //Console.WriteLine();
                 }
@@ -126,7 +137,7 @@ namespace eBayScraper
                         Console.WriteLine("ListingId\t\tProductName\t\tPrice\t\tListingType\t\tUrl");
                         while (reader.Read())
                         {
-                            Console.WriteLine(String.Format("{0} \t | {1} \t | {2} \t | {3} \t | {4}",
+                            Console.WriteLine(String.Format("{0} \n | {1} \n | {2} \n | {3} \n | {4}",
                                 reader[0], reader[1], reader[2], reader[3], reader[4]));
                         }
                     }
