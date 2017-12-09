@@ -1,25 +1,44 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using System;
 
 namespace SeleniumFirst
 {
     class Program
     {
+        // Create reference for browser
+        IWebDriver driver = new ChromeDriver();
+
         static void Main(string[] args)
         {
-            // Create reference for browser
-            IWebDriver driver = new ChromeDriver();
 
+        }
+
+        [SetUp]
+        public void Initialize()
+        {
             // Navigate to Google page
             driver.Navigate().GoToUrl("http://www.google.com");
+            Console.WriteLine("Opened URL");
+        }
 
+        [Test]
+        public void ExecuteTest()
+        {
             // Find the text box element
             IWebElement element = driver.FindElement(By.Name("q"));
 
             // Perform ops
             element.SendKeys("executeautomation");
-
-            driver.Close();
+            Console.WriteLine("Executed Test");
         }
-    }
+
+        [TearDown]
+        public void CleanUp()
+        {
+            driver.Close();
+            Console.WriteLine("Closed the browser");
+        }
+    }   
 }
