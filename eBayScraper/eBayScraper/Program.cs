@@ -21,6 +21,8 @@ namespace eBayScraper
 
         private static async void eBayScraper()
         {
+
+
             // Scraping example from .https://youtu.be/B4x4pnLYMWI
             // Database example from .
 
@@ -78,7 +80,7 @@ namespace eBayScraper
                             .Equals("lvtitle")).FirstOrDefault().InnerText.Trim('\r', '\n', '\t')
                     );
                     Console.WriteLine(ProductName);
-                
+
                     // Price
                     var xPrice = (
                         Regex.Match(
@@ -89,14 +91,14 @@ namespace eBayScraper
                         );
                     var Price = xPrice.ToString();
                     Console.WriteLine(Price);
-                    
+
                     // ListingType
                     var ListingType = (ProductListItem.Descendants("li")
                         .Where(node => node.GetAttributeValue("class", "")
                             .Equals("lvformat")).FirstOrDefault().InnerText.Trim('\r', '\n', '\t')
                             );
                     Console.WriteLine(ListingType);
-                    
+
 
                     // Url
                     var Url = (ProductListItem.Descendants("a").FirstOrDefault().GetAttributeValue("href", "").Trim('\r', '\n', '\t')
