@@ -17,6 +17,7 @@
             <asp:Button ID="ClickMeButton" runat="server" Text="Click Me" OnClick="ClickMeButton_Click" /> <br /> 
             <br /> <br /> 
             <asp:Label ID="RowCount" runat="server" />
+            <asp:Label ID="Tagslabel" runat="server" /> 
             <asp:Label ID="OutputLabel" runat="server" /> 
         </div>
     </form>
