@@ -58,6 +58,15 @@ namespace YahooStockScraper1 {
         protected global::System.Web.UI.WebControls.Label DataBaseLabel;
         
         /// <summary>
+        /// DataBuider control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label DataBuider;
+        
+        /// <summary>
         /// RowCount control.
         /// </summary>
         /// <remarks>
