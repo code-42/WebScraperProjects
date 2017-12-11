@@ -13,9 +13,10 @@
     <form id="form1" runat="server">
         <div>
             <asp:Label ID="InputHereLabel" runat="server" Text="Input Stock Symbol Here" /> 
-            <asp:TextBox ID="InputTextBox" value="hd" runat="server" />   
-            <asp:Button ID="ClickMeButton" runat="server" Text="Click Me" OnClick="ClickMeButton_Click" /> <br /> 
-            <br /> <br /> 
+            <asp:TextBox ID="InputTextBox" value="aa" runat="server" />   
+            <asp:Button ID="ClickMeButton" runat="server" Text="Submit" OnClick="ClickMeButton_Click" /> <br /> 
+            <br />
+            <asp:Label ID="DataBaseLabel" runat="server" />
             <asp:Label ID="RowCount" runat="server" />
             <asp:Label ID="Tagslabel" runat="server" /> 
             <asp:Label ID="OutputLabel" runat="server" /> 

@@ -97,11 +97,11 @@ namespace YahooStockScraper1
                 try
                 {
                     conn.Open();
-                    Console.WriteLine("connection opened!");
+                    DataBaseLabel.Text = "Database connection opened!" + "<br /><br />";
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("My Bad: " + e);
+                    DataBaseLabel.Text = "My Bad: " + e + "<br /><br />";
                 }
             }
 
