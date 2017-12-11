@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Net;
+// using System.Net.Http;
+using System.Threading.Tasks;
 using HtmlAgilityPack;
 using System.Text.RegularExpressions;
 
@@ -26,34 +28,64 @@ namespace YahooStockScraper1
 
         protected void ClickMeButton_Click(object sender, EventArgs e)
         {
+            // Get stock symbol from user
+            var stockSymbol = getStocksymbol();
+
+            var page = LoadPage1(stockSymbol);
+            // var page = LoadPage2(stockSymbol)
+
             // Get stock symbol from user then get web page
-            var page = getYahooFinanceHistoricalData();
+            getYahooFinanceHistoricalData(page);
 
             //getAtags(page);
-
-            // Get the data
-            getTDtags(page);
-
         }
-        
-        public HtmlDocument getYahooFinanceHistoricalData()
+
+        public string getStocksymbol()
         {
+            return InputTextBox.Text;
+        }
+
+        public HtmlDocument LoadPage1(string stockSymbol)
+        {
+            // There are several ways to load a web page - heres one
+            // .https://www.codeproject.com/Articles/659019/Scraping-HTML-DOM-elements-using-HtmlAgilityPack-H
+
             var getHtmlWeb = new HtmlWeb();
+
             var document = "https://finance.yahoo.com/quote/";
-            document += InputTextBox.Text;
-                document += "/history?p=";
-                document += InputTextBox.Text;
-                HtmlDocument page = getHtmlWeb.Load(document);
+            document += stockSymbol;
+            document += "/history?p=";
+            document += stockSymbol;
+
+            HtmlDocument page = getHtmlWeb.Load(document);
 
             return page;
         }
 
-        public void getTDtags(HtmlDocument page)
+        public HtmlDocument LoadPage2(string stockSymbol)
         {
-            /*
-             /html[@id='atomic']/body/div[@id='app']/div/div/div[@id='render-target-default']/div[@class='Bgc($bg-body) Mih(100%) W(100%) US']/div[@class='Pos(r) Bgc($bg-content) Miw(1007px) Maw(1260px) tablet_Miw(600px)--noRightRail Bxz(bb) Bdstartc(t) Bdstartw(20px) Bdendc(t) Bdends(s) Bdendw(20px) Bdstarts(s) Mx(a)']/div[@id='YDC-Col1']/div[@id='Main']/div[2]/div[@id='mrt-node-Col1-1-HistoricalDataTable']/div[@id='Col1-1-HistoricalDataTable-Proxy']/section[@class='smartphone_Px(20px)']/div[@class='Pb(10px) Ovx(a) W(100%)']/table[@class='W(100%) M(0)']/tbody/tr[@class='BdT Bdc($c-fuji-grey-c) Ta(end) Fz(s) Whs(nw)'][1]/td[@class='Py(10px) Ta(start) Pend(10px)']/span
-             */
+            // There are several ways to load a web page - heres another
+            // .http://blog.adrian-thomas.com/2013/02/starters-guide-to-web-scraping-with.html
 
+            var htmlDocument = new HtmlAgilityPack.HtmlDocument();
+            var document = "https://finance.yahoo.com/quote/";
+            document += stockSymbol;
+            document += "/history?p=";
+            document += stockSymbol;
+
+            using (var webClient = new System.Net.WebClient())
+            {
+                using (var stream = webClient.OpenRead(document))
+                {
+                    htmlDocument.Load(stream);
+                }
+            }
+
+            return htmlDocument;
+        }
+
+        public void getYahooFinanceHistoricalData(HtmlDocument page)
+        {
             // Count the number of rows to retrieve
             var trRows = page.DocumentNode.SelectNodes("//tr");
             int trCounter = 1;
@@ -69,26 +101,17 @@ namespace YahooStockScraper1
             // Loop through the data rows
             for (var row = 0; row < trCounter; row++)
             {
-
-                // want to include "//tbody//tr[" + row + "]"
-                // want to exclude "//tr[" + row + "][.//@class='Ta(c) Py(10px) Pstart(10px)']"
-                // try this //tr[" + row + "][not(.//@class='Ta(c) Py(10px) Pstart(10px)')]
-                // this will select only Dividend rows //tr[9][.//@class='Ta(c) Py(10px) Pstart(10px)']
-
+                // Select all tr that do not have the specified class in their descendants .//
                 var trTags = page.DocumentNode.SelectNodes("//tr[" + row + "][not(.//@class='Ta(c) Py(10px) Pstart(10px)')]");
                 if (trTags != null)
                 {
                     foreach (var trTag in trTags)
                     {
-                        //html[@id='atomic']/body/div[@id='app']/div/div/div[@id='render-target-default']/div[@class='Bgc($bg-body) Mih(100%) W(100%) US']/div[@class='Pos(r) Bgc($bg-content) Miw(1007px) Maw(1260px) tablet_Miw(600px)--noRightRail Bxz(bb) Bdstartc(t) Bdstartw(20px) Bdendc(t) Bdends(s) Bdendw(20px) Bdstarts(s) Mx(a)']/div[@id='YDC-Col1']/div[@id='Main']/div[2]/div[@id='mrt-node-Col1-1-HistoricalDataTable']/div[@id='Col1-1-HistoricalDataTable-Proxy']/section[@class='smartphone_Px(20px)']/div[@class='Pb(10px) Ovx(a) W(100%)']/table[@class='W(100%) M(0)']/tbody/tr[@class='BdT Bdc($c-fuji-grey-c) Ta(end) Fz(s) Whs(nw)'][ROW]/td[@class='Py(10px) Pstart(10px)'][COL]/span // replace ROW and COL
+                        // Loop through the columns to select the data
                         for (var col = 0; col <= 7; col++)
                         {
-
-                            //var tdTags = page.DocumentNode.SelectNodes(@"/html[@id='atomic']/body/div[@id='app']/div/div/div[@id='render-target-default']/div[@class='Bgc($bg-body) Mih(100%) W(100%) US']/div[@class='Pos(r) Bgc($bg-content) Miw(1007px) Maw(1260px) tablet_Miw(600px)--noRightRail Bxz(bb) Bdstartc(t) Bdstartw(20px) Bdendc(t) Bdends(s) Bdendw(20px) Bdstarts(s) Mx(a)']/div[@id='YDC-Col1']/div[@id='Main']/div[2]/div[@id='mrt-node-Col1-1-HistoricalDataTable']/div[@id='Col1-1-HistoricalDataTable-Proxy']/section[@class='smartphone_Px(20px)']/div[@class='Pb(10px) Ovx(a) W(100%)']/table[@class='W(100%) M(0)']/tbody/tr[@class='BdT Bdc($c-fuji-grey-c) Ta(end) Fz(s) Whs(nw)'][1]/td[@class='Py(10px) Pstart(10px)'][" + col + "]/span");
+                            // Select the data in the col
                             var selectNodes = "//tbody//tr[" + row + "]//td[" + col + "]/span";
-                            //    " | not //tr[" + row + "][.//@class='Ta(c) Py(10px) Pstart(10px)']";
-                            //var selectNodes = "//tr[.//*[@class='Ta(c) Py(10px) Pstart(10px)']]";
-
                             var tdTags = page.DocumentNode.SelectNodes(selectNodes);
                             if (tdTags != null)
                             {
@@ -97,15 +120,13 @@ namespace YahooStockScraper1
                                     {
                                         OutputLabel.Text += tdTag.InnerText + " \t "; // + "\t" + "<br />";
                                     }
-                                    //OutputLabel.Text += tdTag.InnerText + " \t "; // + "\t" + "<br />";
                                 }
                             }
-                            //OutputLabel.Text += "<br />";
                         }
+                        // Print a line break after each tr
                         OutputLabel.Text += "<br />";
                     }
                 }
-                //OutputLabel.Text += "<br />";
             }
         }
 
