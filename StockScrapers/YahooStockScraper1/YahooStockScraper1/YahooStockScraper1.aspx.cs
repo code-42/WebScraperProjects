@@ -38,9 +38,9 @@ namespace YahooStockScraper1
             // var page = LoadPage2(stockSymbol)
 
             // Get stock symbol from user then get web page
-            //GetYahooFinanceHistoricalData(page);
+            GetYahooFinanceHistoricalData(page);
 
-            YahooScraper();
+            //YahooScraper();
 
             //getAtags(page);
         }
@@ -103,38 +103,38 @@ namespace YahooStockScraper1
                 RowCount.Text = "Total rows: " + trCounter.ToString() + "<br /><br />";
             }
 
-            //// Loop through the data rows
-            //for (var row = 0; row < trCounter; row++)
-            //{
-            //    // Select all tr that do not have the specified class in their descendants .//
-            //    var trTags =
-            //        page.DocumentNode.SelectNodes("//tr[" + row +
-            //                                      "][not(.//@class='Ta(c) Py(10px) Pstart(10px)')]");
-            //    if (trTags != null)
-            //    {
-            //        foreach (var trTag in trTags)
-            //        {
-            //            // Loop through the columns to select the data
-            //            for (var col = 0; col <= 7; col++)
-            //            {
-            //                // Select the data in the col
-            //                var selectNodes = "//tbody//tr[" + row + "]//td[" + col + "]/span";
-            //                var tdTags = page.DocumentNode.SelectNodes(selectNodes);
-            //                if (tdTags != null)
-            //                {
-            //                    foreach (var tdTag in tdTags)
-            //                    {
-            //                        {
-            //                            OutputLabel.Text += tdTag.InnerText + " \t "; // + "\t" + "<br />";
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //            // Print a line break after each tr
-            //            OutputLabel.Text += "<br />";
-            //        }
-            //    }
-            //}
+            // Loop through the data rows
+            for (var row = 0; row < trCounter; row++)
+            {
+                // Select all tr that do not have the specified class in their descendants .//
+                var trTags =
+                    page.DocumentNode.SelectNodes("//tr[" + row +
+                                                  "][not(.//@class='Ta(c) Py(10px) Pstart(10px)')]");
+                if (trTags != null)
+                {
+                    foreach (var trTag in trTags)
+                    {
+                        // Loop through the columns to select the data
+                        for (var col = 0; col <= 7; col++)
+                        {
+                            // Select the data in the col
+                            var selectNodes = "//tbody//tr[" + row + "]//td[" + col + "]/span";
+                            var tdTags = page.DocumentNode.SelectNodes(selectNodes);
+                            if (tdTags != null)
+                            {
+                                foreach (var tdTag in tdTags)
+                                {
+                                    {
+                                        OutputLabel.Text += tdTag.InnerText + " \t "; // + "\t" + "<br />";
+                                    }
+                                }
+                            }
+                        }
+                        // Print a line break after each tr
+                        OutputLabel.Text += "<br />";
+                    }
+                }
+            }
         }
 
 
