@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -86,6 +87,25 @@ namespace YahooStockScraper1
 
         public void GetYahooFinanceHistoricalData(HtmlDocument page)
         {
+             // Establish database connection
+            using (SqlConnection conn = new SqlConnection())
+            {
+                // Create connection string
+                conn.ConnectionString =
+                    @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\MeAdmin\Documents\YahooData.mdf;Integrated Security=True;Connect Timeout=30";
+
+                try
+                {
+                    conn.Open();
+                    Console.WriteLine("connection opened!");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("My Bad: " + e);
+                }
+            }
+
+
             // Count the number of rows to retrieve
             var trRows = page.DocumentNode.SelectNodes("//tr");
             int trCounter = 1;
