@@ -116,14 +116,7 @@ namespace eBayScraper
                     insertCommand.Parameters.Add(new SqlParameter("3", ListingType));
                     insertCommand.Parameters.Add(new SqlParameter("4", Url));
 
-                    try
-                    {
-                        Console.WriteLine("Commands executed! Total rows affected are " + insertCommand.ExecuteNonQuery());
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine("OOPs " + e);
-                    }
+
 
                     //Console.WriteLine();
                 }
@@ -148,6 +141,30 @@ namespace eBayScraper
                 {
                     Console.WriteLine("MyBad: " + e);
                 }
+
+                // Return a count of the records in databse before deleting them
+                SqlCommand countCommand = new SqlCommand("SELECT COUNT(*) FROM eBayData1", conn);
+                try
+                {
+                    Console.WriteLine("Records count: " + countCommand.ExecuteNonQuery());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("OOPs " + e);
+                }
+
+
+                // Delete records from the databsase 
+                //SqlCommand deleteCommand = new SqlCommand("DELETE FROM eBayData1", conn);
+                
+                //try
+                //{
+                //    Console.WriteLine("Commands executed! Deleted all records " + deleteCommand.ExecuteNonQuery());
+                //}
+                //catch (Exception e)
+                //{
+                //    Console.WriteLine("OOPs " + e);
+                //}
             }
 
             //Console.WriteLine("Press Control + C to exit");

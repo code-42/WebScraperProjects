@@ -35,7 +35,7 @@ namespace YahooStockScraper1
             // var page = LoadPage2(stockSymbol)
 
             // Get stock symbol from user then get web page
-            getYahooFinanceHistoricalData(page);
+            GetYahooFinanceHistoricalData(page);
 
             //getAtags(page);
         }
@@ -84,7 +84,7 @@ namespace YahooStockScraper1
             return htmlDocument;
         }
 
-        public void getYahooFinanceHistoricalData(HtmlDocument page)
+        public void GetYahooFinanceHistoricalData(HtmlDocument page)
         {
             // Count the number of rows to retrieve
             var trRows = page.DocumentNode.SelectNodes("//tr");
