@@ -108,9 +108,9 @@ namespace YahooStockScraper1
                     //DataBaseLabel.Text = "My Bad: " + e + "<br /><br />";
                 }
 
-                SqlCommand insertCommand = new SqlCommand(
-                    "INSERT INTO SQLCodeProject (Date, Open, High, Low, Close, AdjClose, Volume) VALUES (@0, @1, @2, @3, @4, @5, @6)",
-                    conn);
+                //SqlCommand insertCommand = new SqlCommand(
+                //    "INSERT INTO HistoricalData (Date, Open, High, Low, Close, AdjClose, Volume) VALUES (@0, @1, @2, @3, @4, @5, @6)",
+                //    conn);
 
                 // Count the number of rows to retrieve
                 var trRows = page.DocumentNode.SelectNodes("//tr");
@@ -125,7 +125,7 @@ namespace YahooStockScraper1
                 }
 
                 //List<HtmlNode> Data = new List<HtmlNode>();
-                List<string> data = new List<string>();
+                //List<string> data = new List<string>();
                 var dataArr = new string[8];
                 var Date = DateTime.Today;
                 var Open = 0.0f;
@@ -157,60 +157,54 @@ namespace YahooStockScraper1
                                     foreach (var tdTag in tdTags)
                                     {
                                         //OutputLabel.Text += tdTag.InnerText + " \t ";
-                                        data.Add(tdTag.InnerText);
+                                        //Array.add(dataArr, tdTag.InnerText);
                                         dataArr[col] = tdTag.InnerText;
                                     }
                                     
                                 }
-                                //DataArrLabel1.Text += dataArr[col] + " \t ";
+                                DataArrLabel1.Text += dataArr[col] + " \t ";
 
                                 switch (col)
                                 {
                                     case 1:
                                         Date = Convert.ToDateTime(dataArr[col]);
-                                        DataArrLabel1.Text += dataArr[col] + " \t ";
+                                        // DataArrLabel1.Text += dataArr[col] + " \t ";
                                         break;
                                     case 2:
                                         Open = float.Parse(dataArr[col]);
-                                        DataArrLabel1.Text += dataArr[col] + " \t ";
+                                        // DataArrLabel1.Text += dataArr[col] + " \t ";
                                         break;
                                     case 3:
                                         High = float.Parse(dataArr[col]);
-                                        DataArrLabel1.Text += dataArr[col] + " \t ";
+                                        // DataArrLabel1.Text += dataArr[col] + " \t ";
                                         break;
                                     case 4:
                                         Low = float.Parse(dataArr[col]);
-                                        DataArrLabel1.Text += dataArr[col] + " \t ";
+                                        // DataArrLabel1.Text += dataArr[col] + " \t ";
                                         break;
                                     case 5:
                                         Close = float.Parse(dataArr[col]);
-                                        DataArrLabel1.Text += dataArr[col] + " \t ";
+                                        // DataArrLabel1.Text += dataArr[col] + " \t ";
                                         break;
                                     case 6:
                                         AdjClose = float.Parse(dataArr[col]);
-                                        DataArrLabel1.Text += dataArr[col] + " \t ";
+                                        // DataArrLabel1.Text += dataArr[col] + " \t ";
                                         break;
                                     case 7:
-                                        var sVolume = dataArr[col-1];
-                                        Volume = Int32.Parse(sVolume);
-                                        //DataArrLabel1.Text += sVolume + " \t ";
+                                        Volume = int.Parse((dataArr[col]).Replace(",", ""));
+                                        // DataArrLabel1.Text += Volume + " \t ";
                                         break;
                                 }
 
+                                // DataLabel1.Text += Date + " " + Open + " " + Volume + "<br />";
 
                             }
 
-                            // Print a line break after each tr
-                            //OutputLabel.Text += "<br />";
-                            DataArrLabel1.Text += "<br />";
+                            string statement =
+                                "INSERT INTO HistoricalData (Date, Open, High, Low, Close, AdjClose, Volume) VALUES (@0, @1, @2, @3, @4, @5, @6)";
+                            SqlCommand insertCommand = new SqlCommand(statement, conn);
 
-                            //foreach (string item in data)
-                            //{
-                            //    DataLabel1.Text += item;
-                            //}
 
-                            //DataLabel1.Text += "<br />";
-                            
                             insertCommand.Parameters.Add(new SqlParameter("0", Date));
                             insertCommand.Parameters.Add(new SqlParameter("1", Open));
                             insertCommand.Parameters.Add(new SqlParameter("2", High));
@@ -219,12 +213,64 @@ namespace YahooStockScraper1
                             insertCommand.Parameters.Add(new SqlParameter("5", AdjClose));
                             insertCommand.Parameters.Add(new SqlParameter("6", Volume));
 
+                           DataLabel1.Text +=  "Commands executed! Total rows affected are " + insertCommand.ExecuteNonQuery();
+                            //int RowsInserted = insertCommand.ExecuteNonQuery();
+                            //DataLabel1.Text += RowsInserted;
 
-                            data.Clear();
+
+
+                            // Print a line break after each tr
+                            //OutputLabel.Text += "<br />";
+                            //DataArrLabel1.Text += "<br />";
+
+                            //foreach (string item in data)
+                            //{
+                            //    DataLabel1.Text += item;
+                            //}
+
+                            //DataLabel1.Text += Date + " " + Open + " " + Volume + "<br />";
+
+                            //SqlCommand insertCommand = new SqlCommand(
+                            //    "INSERT INTO HistoricalData (Date, Open, High, Low, Close, AdjClose, Volume) VALUES (@0, @1, @2, @3, @4, @5, @6)",
+                            //    conn);
+
+
+                            //insertCommand.Parameters.Add(new SqlParameter("0", Date));
+                            //insertCommand.Parameters.Add(new SqlParameter("1", Open));
+                            //insertCommand.Parameters.Add(new SqlParameter("2", High));
+                            //insertCommand.Parameters.Add(new SqlParameter("3", Low));
+                            //insertCommand.Parameters.Add(new SqlParameter("4", Close));
+                            //insertCommand.Parameters.Add(new SqlParameter("5", AdjClose));
+                            //insertCommand.Parameters.Add(new SqlParameter("6", Volume));
+
+                            //Console.WriteLine("Commands executed! Total rows affected are " + insertCommand.ExecuteNonQuery());
+
+                            DataLabel1.Text += Date + " " + Open + " " + Volume + "<br />";
+
+                            //Array.Clear(dataArr, 0, 8);
 
                         }
+                        
                     }
+                    
                 }
+                //Console.WriteLine("Commands executed! Total rows affected are " + insertCommand.ExecuteNonQuery());
+
+                // Query the databsase to see the records that were inserted
+                // SqlCommand queryCommand = new SqlCommand("SELECT * FROM HistoricalData", conn);
+
+                // Return a count of the records just inserted into the databse
+                SqlCommand countCommand = new SqlCommand("SELECT COUNT(*) FROM HistoricalData", conn);
+                try
+                {
+                    DataLabel1.Text = "Records count: " + countCommand.ExecuteNonQuery() + "<br />";
+                }
+                catch (Exception e)
+                {
+                    DataLabel1.Text =  "OOPs " + e;
+                }
+
+
             }
         }
 
