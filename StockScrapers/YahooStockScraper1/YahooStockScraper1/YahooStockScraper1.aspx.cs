@@ -91,54 +91,145 @@ namespace YahooStockScraper1
 
         public void GetYahooFinanceHistoricalData(HtmlDocument page)
         {
-            // Count the number of rows to retrieve
-            var trRows = page.DocumentNode.SelectNodes("//tr");
-            int trCounter = 1;
-            if (trRows != null)
+            using (SqlConnection conn = new SqlConnection())
             {
-                foreach (var trRow in trRows)
-                {
-                    trCounter++;
-                }
-                RowCount.Text = "Total rows: " + trCounter.ToString() + "<br /><br />";
-            }
+                // Create connection string
+                conn.ConnectionString =
+                    @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\MeAdmin\Documents\YahooData.mdf;Integrated Security=True;Connect Timeout=30"
+                    ;
 
-            // Loop through the data rows
-            for (var row = 0; row < trCounter; row++)
-            {
-                // Select all tr that do not have the specified class in their descendants .//
-                var trTags =
-                    page.DocumentNode.SelectNodes("//tr[" + row +
-                                                  "][not(.//@class='Ta(c) Py(10px) Pstart(10px)')]");
-                if (trTags != null)
+                try
                 {
-                    foreach (var trTag in trTags)
+                    conn.Open();
+                    //DataBaseLabel.Text = "Database connection opened!" + "<br /><br />";
+                }
+                catch (Exception e)
+                {
+                    //DataBaseLabel.Text = "My Bad: " + e + "<br /><br />";
+                }
+
+                SqlCommand insertCommand = new SqlCommand(
+                    "INSERT INTO SQLCodeProject (Date, Open, High, Low, Close, AdjClose, Volume) VALUES (@0, @1, @2, @3, @4, @5, @6)",
+                    conn);
+
+                // Count the number of rows to retrieve
+                var trRows = page.DocumentNode.SelectNodes("//tr");
+                int trCounter = 1;
+                if (trRows != null)
+                {
+                    foreach (var trRow in trRows)
                     {
-                        // Loop through the columns to select the data
-                        for (var col = 0; col <= 7; col++)
+                        trCounter++;
+                    }
+                    RowCount.Text = "Total rows: " + trCounter.ToString() + "<br /><br />";
+                }
+
+                //List<HtmlNode> Data = new List<HtmlNode>();
+                List<string> data = new List<string>();
+                var dataArr = new string[8];
+                var Date = DateTime.Today;
+                var Open = 0.0f;
+                var High = 0.0f;
+                var Low = 0.0f;
+                var Close = 0.0f;
+                var AdjClose = 0.0f;
+                Int32 Volume = 0;
+
+                // Loop through the data rows
+                for (var row = 0; row < trCounter; row++)
+                {
+                    // Select all tr that do not have the specified class in their descendants .//
+                    var trTags =
+                        page.DocumentNode.SelectNodes("//tr[" + row +
+                                                      "][not(.//@class='Ta(c) Py(10px) Pstart(10px)')]");
+                    if (trTags != null)
+                    {
+                        foreach (var trTag in trTags)
                         {
-                            // Select the data in the col
-                            var selectNodes = "//tbody//tr[" + row + "]//td[" + col + "]/span";
-                            var tdTags = page.DocumentNode.SelectNodes(selectNodes);
-                            if (tdTags != null)
+                            // Loop through the columns to select the data
+                            for (var col = 0; col <= 7; col++)
                             {
-                                foreach (var tdTag in tdTags)
+                                // Select the data in the col
+                                var selectNodes = "//tbody//tr[" + row + "]//td[" + col + "]/span";
+                                var tdTags = page.DocumentNode.SelectNodes(selectNodes);
+                                if (tdTags != null)
                                 {
+                                    foreach (var tdTag in tdTags)
                                     {
-                                        OutputLabel.Text += tdTag.InnerText + " \t "; // + "\t" + "<br />";
+                                        //OutputLabel.Text += tdTag.InnerText + " \t ";
+                                        data.Add(tdTag.InnerText);
+                                        dataArr[col] = tdTag.InnerText;
                                     }
+                                    
                                 }
+                                //DataArrLabel1.Text += dataArr[col] + " \t ";
+
+                                switch (col)
+                                {
+                                    case 1:
+                                        Date = Convert.ToDateTime(dataArr[col]);
+                                        DataArrLabel1.Text += dataArr[col] + " \t ";
+                                        break;
+                                    case 2:
+                                        Open = float.Parse(dataArr[col]);
+                                        DataArrLabel1.Text += dataArr[col] + " \t ";
+                                        break;
+                                    case 3:
+                                        High = float.Parse(dataArr[col]);
+                                        DataArrLabel1.Text += dataArr[col] + " \t ";
+                                        break;
+                                    case 4:
+                                        Low = float.Parse(dataArr[col]);
+                                        DataArrLabel1.Text += dataArr[col] + " \t ";
+                                        break;
+                                    case 5:
+                                        Close = float.Parse(dataArr[col]);
+                                        DataArrLabel1.Text += dataArr[col] + " \t ";
+                                        break;
+                                    case 6:
+                                        AdjClose = float.Parse(dataArr[col]);
+                                        DataArrLabel1.Text += dataArr[col] + " \t ";
+                                        break;
+                                    case 7:
+                                        var sVolume = dataArr[col-1];
+                                        Volume = Int32.Parse(sVolume);
+                                        //DataArrLabel1.Text += sVolume + " \t ";
+                                        break;
+                                }
+
+
                             }
+
+                            // Print a line break after each tr
+                            //OutputLabel.Text += "<br />";
+                            DataArrLabel1.Text += "<br />";
+
+                            //foreach (string item in data)
+                            //{
+                            //    DataLabel1.Text += item;
+                            //}
+
+                            //DataLabel1.Text += "<br />";
+                            
+                            insertCommand.Parameters.Add(new SqlParameter("0", Date));
+                            insertCommand.Parameters.Add(new SqlParameter("1", Open));
+                            insertCommand.Parameters.Add(new SqlParameter("2", High));
+                            insertCommand.Parameters.Add(new SqlParameter("3", Low));
+                            insertCommand.Parameters.Add(new SqlParameter("4", Close));
+                            insertCommand.Parameters.Add(new SqlParameter("5", AdjClose));
+                            insertCommand.Parameters.Add(new SqlParameter("6", Volume));
+
+
+                            data.Clear();
+
                         }
-                        // Print a line break after each tr
-                        OutputLabel.Text += "<br />";
                     }
                 }
             }
         }
 
 
-        public static async void YahooScraper()
+        public static void YahooScraper()
         {
             // Establish database connection
             using (SqlConnection conn = new SqlConnection())
@@ -190,8 +281,9 @@ namespace YahooStockScraper1
                 {
                     // Date
                     var yDate = (span.GetAttributeValue("data-reactid", ""));
+                    
 
-                    //DataBuider.Text += "test" + yDate;
+                    //DataBuiderLabel.Text += "test" + yDate;
                 }
             }
         }

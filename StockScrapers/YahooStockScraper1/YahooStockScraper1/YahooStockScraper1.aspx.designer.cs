@@ -58,13 +58,13 @@ namespace YahooStockScraper1 {
         protected global::System.Web.UI.WebControls.Label DataBaseLabel;
         
         /// <summary>
-        /// DataBuider control.
+        /// DataBuiderLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label DataBuider;
+        protected global::System.Web.UI.WebControls.Label DataBuiderLabel;
         
         /// <summary>
         /// RowCount control.
@@ -92,5 +92,23 @@ namespace YahooStockScraper1 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label OutputLabel;
+        
+        /// <summary>
+        /// DataLabel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label DataLabel1;
+        
+        /// <summary>
+        /// DataArrLabel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label DataArrLabel1;
     }
 }

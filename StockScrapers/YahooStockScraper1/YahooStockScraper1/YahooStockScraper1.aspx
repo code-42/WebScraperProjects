@@ -18,10 +18,12 @@
             <asp:Button ID="ClickMeButton" runat="server" Text="Submit" OnClick="ClickMeButton_Click" /> <br /> 
             <br />
             <asp:Label ID="DataBaseLabel" runat="server" />
-            <asp:Label ID="DataBuider" runat="server" />
+            <asp:Label ID="DataBuiderLabel" runat="server" />
             <asp:Label ID="RowCount" runat="server" />
             <asp:Label ID="Tagslabel" runat="server" /> 
-            <asp:Label ID="OutputLabel" runat="server" /> 
+            <asp:Label ID="OutputLabel" runat="server" />
+            <asp:Label ID="DataLabel1" runat="server" />
+            <asp:Label ID="DataArrLabel1" runat="server" />
         </div>
     </form>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
