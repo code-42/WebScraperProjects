@@ -112,6 +112,10 @@ namespace YahooStockScraper1
                 //    "INSERT INTO HistoricalData (Date, Open, High, Low, Close, AdjClose, Volume) VALUES (@0, @1, @2, @3, @4, @5, @6)",
                 //    conn);
 
+                //string statement =
+                //    "INSERT INTO HistoricalData (Date, Open, High, Low, Close, AdjClose, Volume) VALUES (@0, @1, @2, @3, @4, @5, @6)";
+                //SqlCommand insertCommand = new SqlCommand(statement, conn);
+
                 // Count the number of rows to retrieve
                 var trRows = page.DocumentNode.SelectNodes("//tr");
                 int trCounter = 1;
@@ -162,7 +166,7 @@ namespace YahooStockScraper1
                                     }
                                     
                                 }
-                                DataArrLabel1.Text += dataArr[col] + " \t ";
+                                // DataArrLabel1.Text += dataArr[col] + " \t ";
 
                                 switch (col)
                                 {
@@ -196,7 +200,7 @@ namespace YahooStockScraper1
                                         break;
                                 }
 
-                                // DataLabel1.Text += Date + " " + Open + " " + Volume + "<br />";
+                                // DataArrLabel1.Text += Date + " " + Open + " " + Volume + "<br />";
 
                             }
 
@@ -204,6 +208,7 @@ namespace YahooStockScraper1
                                 "INSERT INTO HistoricalData (Date, Open, High, Low, Close, AdjClose, Volume) VALUES (@0, @1, @2, @3, @4, @5, @6)";
                             SqlCommand insertCommand = new SqlCommand(statement, conn);
 
+                            //DataArrLabel1.Text += Date + " " + Open + " " + Volume + "<br />";
 
                             insertCommand.Parameters.Add(new SqlParameter("0", Date));
                             insertCommand.Parameters.Add(new SqlParameter("1", Open));
@@ -213,7 +218,7 @@ namespace YahooStockScraper1
                             insertCommand.Parameters.Add(new SqlParameter("5", AdjClose));
                             insertCommand.Parameters.Add(new SqlParameter("6", Volume));
 
-                           DataLabel1.Text +=  "Commands executed! Total rows affected are " + insertCommand.ExecuteNonQuery();
+                            // DataArrLabel1.Text += "Commands executed! Total rows affected are " + insertCommand.ExecuteNonQuery();
                             //int RowsInserted = insertCommand.ExecuteNonQuery();
                             //DataLabel1.Text += RowsInserted;
 
@@ -245,7 +250,6 @@ namespace YahooStockScraper1
 
                             //Console.WriteLine("Commands executed! Total rows affected are " + insertCommand.ExecuteNonQuery());
 
-                            DataLabel1.Text += Date + " " + Open + " " + Volume + "<br />";
 
                             //Array.Clear(dataArr, 0, 8);
 
