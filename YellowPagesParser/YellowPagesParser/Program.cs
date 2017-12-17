@@ -15,81 +15,14 @@ namespace YellowPagesParser
     {
         static void Main(string[] args)
         {
-            // eBayParser();
+            // yellowPagesParser();
 
-            yellowPagesParser();
-
-            //yellowPagesParserPage2();
+            yellowPagesParserPage2();
 
             //StartCrawlerAsync();
 
             Console.ReadLine();
         }
-
-
-        private static async void eBayParser()
-        {
-            // Example from .https://youtu.be/B4x4pnLYMWI
-
-            var url = "https://www.ebay.com/sch/i.html?_from=R40&_nkw=xbox+one&_in_kw=1&_ex_kw=&_sacat=0&LH_Complete=1&_udlo=&_udhi=&_samilow=&_samihi=&_sadis=15&_stpos=02886&_sargn=-1%26saslc%3D1&_salic=1&_sop=12&_dmd=1&_ipg=200";
-
-            // This method call using System.Net.Http;
-            // Requires method to be async
-            // Need to add await to method call
-            var httpclient = new HttpClient();
-            var html = await httpclient.GetStringAsync(url);
-
-            // This call using HtmlAgilityPack package
-            var htmlDocument = new HtmlDocument();
-            htmlDocument.LoadHtml(html);
-
-            // Use HtlmAgilityPack to parse out data
-            var ProductsHtml = htmlDocument.DocumentNode.Descendants("ul")
-                .Where(node2 => node2.GetAttributeValue("id", "")
-                    .Equals("ListViewInner")).ToList();
-
-            var ProductListItems = ProductsHtml[0].Descendants("li")
-                .Where(node => node.GetAttributeValue("id", "")
-                    .Contains("item")).ToList();
-
-            Console.WriteLine(ProductListItems.Count());
-            Console.WriteLine();
-
-            foreach (var ProductListItem in ProductListItems)
-            {
-                // id
-                Console.WriteLine(ProductListItem.GetAttributeValue("listingid", ""));
-
-                // ProductName
-                Console.WriteLine(ProductListItem.Descendants("h3")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Equals("lvtitle")).FirstOrDefault().InnerText.Trim('\r', '\n', '\t')
-                );
-
-                // Price
-                Console.WriteLine(
-                    Regex.Match(
-                    ProductListItem.Descendants("li")
-                    .Where(node => node.GetAttributeValue("class", "")
-                    .Equals("lvprice prc")).FirstOrDefault().InnerText.Trim('\r', '\n', '\t')
-                    , @"\d+.\d+")
-                    );
-
-                // ListingType lvformat
-                Console.WriteLine(ProductListItem.Descendants("li")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Equals("lvformat")).FirstOrDefault().InnerText.Trim('\r', '\n', '\t')
-                        );
-
-                // Url
-                Console.WriteLine(ProductListItem.Descendants("a").FirstOrDefault().GetAttributeValue("href", "").Trim('\r', '\n', '\t')
-                    );
-
-                Console.WriteLine();
-            }
-            Console.WriteLine("Press Control + C to exit");
-        }
-
 
         private static async Task yellowPagesParser()
         {
