@@ -91,147 +91,152 @@ namespace YahooFinanceScraper_console
                 var AdjClose = 0.0f;
                 Int32 Volume = 0;
 
-                //// Loop through the data rows
-                //for (var row = 0; row < trCounter; row++)
-                //{
-                //    // Select all tr that do not have the specified class in their descendants .//
-                //    var trTags =
-                //        htmlDocument.DocumentNode.SelectNodes("//tr[" + row +
-                //                                      "][not(.//@class='Ta(c) Py(10px) Pstart(10px)')]");
-                //    if (trTags != null)
-                //    {
-                //        foreach (var trTag in trTags)
-                //        {
-                //            // Loop through the columns to select the data
-                //            for (var col = 0; col <= 7; col++)
-                //            {
-                //                // Select the data in the col
-                //                var selectNodes = "//tbody//tr[" + row + "]//td[" + col + "]/span";
-                //                var tdTags = htmlDocument.DocumentNode.SelectNodes(selectNodes);
-                //                if (tdTags != null)
-                //                {
-                //                    foreach (var tdTag in tdTags)
-                //                    {
-                //                        //OutputLabel.Text += tdTag.InnerText + " \t ";
-                //                        //Array.add(dataArr, tdTag.InnerText);
-                //                        dataArr[col] = tdTag.InnerText;
-                //                    }
+                // Loop through the data rows
+                for (var row = 0; row < trCounter; row++)
+                {
+                    // Select all tr that do not have the specified class in their descendants .//
+                    var trTags =
+                        htmlDocument.DocumentNode.SelectNodes("//tr[" + row +
+                                                              "][not(.//@class='Ta(c) Py(10px) Pstart(10px)')]");
+                    if (trTags != null)
+                    {
+                        foreach (var trTag in trTags)
+                        {
+                            // Loop through the columns to select the data
+                            for (var col = 0; col <= 7; col++)
+                            {
+                                // Select the data in the col
+                                var selectNodes = "//tbody//tr[" + row + "]//td[" + col + "]/span";
+                                var tdTags = htmlDocument.DocumentNode.SelectNodes(selectNodes);
+                                if (tdTags != null)
+                                {
+                                    foreach (var tdTag in tdTags)
+                                    {
+                                        Console.WriteLine(tdTag.InnerText);
+                                        //Array.add(dataArr, tdTag.InnerText);
+                                        dataArr[col] = tdTag.InnerText;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
 
                 //                }
-                //                // DataArrLabel1.Text += dataArr[col] + " \t ";
+                                    //                // DataArrLabel1.Text += dataArr[col] + " \t ";
 
 
-                //                switch (col)
-                //                {
-                //                    case 1:
-                //                        Date = Convert.ToDateTime(dataArr[col]);
-                //                        // DataArrLabel1.Text += dataArr[col] + " \t ";
-                //                        break;
-                //                    case 2:
-                //                        Open = float.Parse(dataArr[col]);
-                //                        // DataArrLabel1.Text += dataArr[col] + " \t ";
-                //                        break;
-                //                    case 3:
-                //                        High = float.Parse(dataArr[col]);
-                //                        // DataArrLabel1.Text += dataArr[col] + " \t ";
-                //                        break;
-                //                    case 4:
-                //                        Low = float.Parse(dataArr[col]);
-                //                        // DataArrLabel1.Text += dataArr[col] + " \t ";
-                //                        break;
-                //                    case 5:
-                //                        Close = float.Parse(dataArr[col]);
-                //                        // DataArrLabel1.Text += dataArr[col] + " \t ";
-                //                        break;
-                //                    case 6:
-                //                        AdjClose = float.Parse(dataArr[col]);
-                //                        // DataArrLabel1.Text += dataArr[col] + " \t ";
-                //                        break;
-                //                    case 7:
-                //                        Volume = int.Parse((dataArr[col]).Replace(",", ""));
-                //                        // DataArrLabel1.Text += Volume + " \t ";
-                //                        break;
-                //                }
+                                    //                switch (col)
+                                    //                {
+                                    //                    case 1:
+                                    //                        Date = Convert.ToDateTime(dataArr[col]);
+                                    //                        // DataArrLabel1.Text += dataArr[col] + " \t ";
+                                    //                        break;
+                                    //                    case 2:
+                                    //                        Open = float.Parse(dataArr[col]);
+                                    //                        // DataArrLabel1.Text += dataArr[col] + " \t ";
+                                    //                        break;
+                                    //                    case 3:
+                                    //                        High = float.Parse(dataArr[col]);
+                                    //                        // DataArrLabel1.Text += dataArr[col] + " \t ";
+                                    //                        break;
+                                    //                    case 4:
+                                    //                        Low = float.Parse(dataArr[col]);
+                                    //                        // DataArrLabel1.Text += dataArr[col] + " \t ";
+                                    //                        break;
+                                    //                    case 5:
+                                    //                        Close = float.Parse(dataArr[col]);
+                                    //                        // DataArrLabel1.Text += dataArr[col] + " \t ";
+                                    //                        break;
+                                    //                    case 6:
+                                    //                        AdjClose = float.Parse(dataArr[col]);
+                                    //                        // DataArrLabel1.Text += dataArr[col] + " \t ";
+                                    //                        break;
+                                    //                    case 7:
+                                    //                        Volume = int.Parse((dataArr[col]).Replace(",", ""));
+                                    //                        // DataArrLabel1.Text += Volume + " \t ";
+                                    //                        break;
+                                    //                }
 
-                //                // DataArrLabel1.Text += Date + " " + Open + " " + Volume + "<br />";
+                                    //                // DataArrLabel1.Text += Date + " " + Open + " " + Volume + "<br />";
 
-                //            }
+                                    //            }
 
-                //            string statement =
-                //                "INSERT INTO HistoricalData (Date, Open, High, Low, Close, AdjClose, Volume) VALUES (@0, @1, @2, @3, @4, @5, @6)";
-                //            SqlCommand insertCommand = new SqlCommand(statement, conn);
+                                    //            string statement =
+                                    //                "INSERT INTO HistoricalData (Date, Open, High, Low, Close, AdjClose, Volume) VALUES (@0, @1, @2, @3, @4, @5, @6)";
+                                    //            SqlCommand insertCommand = new SqlCommand(statement, conn);
 
-                //            //DataArrLabel1.Text += Date + " " + Open + " " + Volume + "<br />";
+                                    //            //DataArrLabel1.Text += Date + " " + Open + " " + Volume + "<br />";
 
-                //            insertCommand.Parameters.Add(new SqlParameter("0", Date));
-                //            insertCommand.Parameters.Add(new SqlParameter("1", Open));
-                //            insertCommand.Parameters.Add(new SqlParameter("2", High));
-                //            insertCommand.Parameters.Add(new SqlParameter("3", Low));
-                //            insertCommand.Parameters.Add(new SqlParameter("4", Close));
-                //            insertCommand.Parameters.Add(new SqlParameter("5", AdjClose));
-                //            insertCommand.Parameters.Add(new SqlParameter("6", Volume));
+                                    //            insertCommand.Parameters.Add(new SqlParameter("0", Date));
+                                    //            insertCommand.Parameters.Add(new SqlParameter("1", Open));
+                                    //            insertCommand.Parameters.Add(new SqlParameter("2", High));
+                                    //            insertCommand.Parameters.Add(new SqlParameter("3", Low));
+                                    //            insertCommand.Parameters.Add(new SqlParameter("4", Close));
+                                    //            insertCommand.Parameters.Add(new SqlParameter("5", AdjClose));
+                                    //            insertCommand.Parameters.Add(new SqlParameter("6", Volume));
 
-                //            insertCommand.ExecuteNonQuery();
-                //int RowsInserted = insertCommand.ExecuteNonQuery();
+                                    //            insertCommand.ExecuteNonQuery();
+                                    //int RowsInserted = insertCommand.ExecuteNonQuery();
 
-                // DataArrLabel1.Text += "Commands executed! Total rows affected are " + insertCommand.ExecuteNonQuery();
-                //DataLabel1.Text += RowsInserted;
+                                    // DataArrLabel1.Text += "Commands executed! Total rows affected are " + insertCommand.ExecuteNonQuery();
+                                    //DataLabel1.Text += RowsInserted;
 
-                // Print a line break after each tr
-                //OutputLabel.Text += "<br />";
-                //DataArrLabel1.Text += "<br />";
+                                    // Print a line break after each tr
+                                    //OutputLabel.Text += "<br />";
+                                    //DataArrLabel1.Text += "<br />";
 
-                //foreach (string item in data)
-                //{
-                //    DataLabel1.Text += item;
-                //}
+                                    //foreach (string item in data)
+                                    //{
+                                    //    DataLabel1.Text += item;
+                                    //}
 
-                //DataLabel1.Text += Date + " " + Open + " " + Volume + "<br />";
+                                    //DataLabel1.Text += Date + " " + Open + " " + Volume + "<br />";
 
-                //SqlCommand insertCommand = new SqlCommand(
-                //    "INSERT INTO HistoricalData (Date, Open, High, Low, Close, AdjClose, Volume) VALUES (@0, @1, @2, @3, @4, @5, @6)",
-                //    conn);
-
-
-                //insertCommand.Parameters.Add(new SqlParameter("0", Date));
-                //insertCommand.Parameters.Add(new SqlParameter("1", Open));
-                //insertCommand.Parameters.Add(new SqlParameter("2", High));
-                //insertCommand.Parameters.Add(new SqlParameter("3", Low));
-                //insertCommand.Parameters.Add(new SqlParameter("4", Close));
-                //insertCommand.Parameters.Add(new SqlParameter("5", AdjClose));
-                //insertCommand.Parameters.Add(new SqlParameter("6", Volume));
-
-                //insertCommand.ExecuteNonQuery();
-
-                // DataLabel1.Text += "Commands executed! Total rows affected are " + insertCommand.ExecuteNonQuery();
+                                    //SqlCommand insertCommand = new SqlCommand(
+                                    //    "INSERT INTO HistoricalData (Date, Open, High, Low, Close, AdjClose, Volume) VALUES (@0, @1, @2, @3, @4, @5, @6)",
+                                    //    conn);
 
 
-                //Array.Clear(dataArr, 0, 8);
+                                    //insertCommand.Parameters.Add(new SqlParameter("0", Date));
+                                    //insertCommand.Parameters.Add(new SqlParameter("1", Open));
+                                    //insertCommand.Parameters.Add(new SqlParameter("2", High));
+                                    //insertCommand.Parameters.Add(new SqlParameter("3", Low));
+                                    //insertCommand.Parameters.Add(new SqlParameter("4", Close));
+                                    //insertCommand.Parameters.Add(new SqlParameter("5", AdjClose));
+                                    //insertCommand.Parameters.Add(new SqlParameter("6", Volume));
 
-                //        }
+                                    //insertCommand.ExecuteNonQuery();
 
-                //    }
-
-                //}
-                //Console.WriteLine("Commands executed! Total rows affected are " + insertCommand.ExecuteNonQuery());
-
-                // Query the databsase to see the records that were inserted
-                // SqlCommand queryCommand = new SqlCommand("SELECT * FROM HistoricalData", conn);
-
-                // Return a count of the records just inserted into the databse
-                //SqlCommand countCommand = new SqlCommand("SELECT COUNT(*) FROM HistoricalData", conn);
-                //try
-                //{
-                //    DataLabel1.Text = "Records count: " + countCommand.ExecuteNonQuery() + "<br />";
-                //}
-                //catch (Exception e)
-                //{
-                //    DataLabel1.Text = "OOPs " + e;
-                //}
+                                    // DataLabel1.Text += "Commands executed! Total rows affected are " + insertCommand.ExecuteNonQuery();
 
 
-            }
-        }
+                                    //Array.Clear(dataArr, 0, 8);
+
+                                    //        }
+
+                                    //    }
+
+                                    //}
+                                    //Console.WriteLine("Commands executed! Total rows affected are " + insertCommand.ExecuteNonQuery());
+
+                                    // Query the databsase to see the records that were inserted
+                                    // SqlCommand queryCommand = new SqlCommand("SELECT * FROM HistoricalData", conn);
+
+                                    // Return a count of the records just inserted into the databse
+                                    //SqlCommand countCommand = new SqlCommand("SELECT COUNT(*) FROM HistoricalData", conn);
+                                    //try
+                                    //{
+                                    //    DataLabel1.Text = "Records count: " + countCommand.ExecuteNonQuery() + "<br />";
+                                    //}
+                                    //catch (Exception e)
+                                    //{
+                                    //    DataLabel1.Text = "OOPs " + e;
+                                    //}
+
+
+                                }
+                            }
     }
 }
 
