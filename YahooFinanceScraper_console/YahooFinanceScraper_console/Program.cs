@@ -89,16 +89,16 @@ namespace YahooFinanceScraper_console
                     Console.WriteLine("Total rows: " + trCounter.ToString());
                 }
 
-                ////List<HtmlNode> Data = new List<HtmlNode>();
-                ////List<string> data = new List<string>();
-                //var dataArr = new string[8];
-                //var Date = DateTime.Today;
-                //var Open = 0.0f;
-                //var High = 0.0f;
-                //var Low = 0.0f;
-                //var Close = 0.0f;
-                //var AdjClose = 0.0f;
-                //Int32 Volume = 0;
+                //List<HtmlNode> Data = new List<HtmlNode>();
+                //List<string> data = new List<string>();
+                var dataArr = new string[8];
+                var Date = DateTime.Today;
+                var Open = 0.0f;
+                var High = 0.0f;
+                var Low = 0.0f;
+                var Close = 0.0f;
+                var AdjClose = 0.0f;
+                Int32 Volume = 0;
 
                 //// Loop through the data rows
                 //for (var row = 0; row < trCounter; row++)
