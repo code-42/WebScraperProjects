@@ -47,17 +47,8 @@ namespace YahooFinanceScraper_console
             using (SqlConnection conn = new SqlConnection())
             {
                 // Create connection string
-                //conn.ConnectionString =
-                //    @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\MeAdmin\Documents\YahooData.mdf;Integrated Security=True;Connect Timeout=30"
-                //    ;
-
-                // conn.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\MeAdmin\Documents\YahooData.mdf;Integrated Security=True;Connect Timeout=30";
-
-                //conn.ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\MyDox\\C_sharp_projects\\WebScraperProjects\\YahooFinanceScraper_console\\YahooFinanceScraper_console\\YahooFinanceScraper_console.mdf;Integrated Security=True;Connect Timeout=30";
                 conn.ConnectionString =
                     @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\MyDox\C_sharp_projects\WebScraperProjects\YahooFinanceScraper_console\YahooFinanceScraper_console\YahooFinanceScraper_console.mdf;Integrated Security=True;Connect Timeout=30";
-
-                //conn.Open();
 
                 try
                 {
@@ -91,14 +82,14 @@ namespace YahooFinanceScraper_console
 
                 //List<HtmlNode> Data = new List<HtmlNode>();
                 //List<string> data = new List<string>();
-                //var dataArr = new string[8];
-                //var Date = DateTime.Today;
-                //var Open = 0.0f;
-                //var High = 0.0f;
-                //var Low = 0.0f;
-                //var Close = 0.0f;
-                //var AdjClose = 0.0f;
-                //Int32 Volume = 0;
+                var dataArr = new string[8];
+                var Date = DateTime.Today;
+                var Open = 0.0f;
+                var High = 0.0f;
+                var Low = 0.0f;
+                var Close = 0.0f;
+                var AdjClose = 0.0f;
+                Int32 Volume = 0;
 
                 //// Loop through the data rows
                 //for (var row = 0; row < trCounter; row++)
